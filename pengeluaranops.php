@@ -17,7 +17,7 @@ if (!isset($_SESSION['level'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title></title>
+    <title>LAPORAN Pengeluaran Opsional</title>
     <link href="img/logo.png" rel="icon">
     <link href="img/logo.png" rel="apple-touch-icon">
     <link href="css/styles.css" rel="stylesheet" />
@@ -57,7 +57,7 @@ if (!isset($_SESSION['level'])) {
             <main>
                 <div class="container-fluid">
                     <div style="background: url(img/) no-repeat center center fixed; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;" class="mt-4 p-5 bg-success text-black rounded">
-                        <h1>Laporan Keuangan</h1>
+                        <h1>Laporan Pengeluaran Opsional</h1>
                         <p>Semangat kerjanya dan semoga harimu menyenangkan :) </p>
                     </div>
                     
@@ -83,13 +83,10 @@ if (!isset($_SESSION['level'])) {
                                             <th>No.</th>
                                             <th>Tanggal</th>
                                             <th>Nama Outlet</th>
-                                            <th>Outlet</th>
-                                            <th>Shift Pagi</th>
-                                            <th>Shift Malam</th>
-                                            <th>Debit dan Transfer</th>
-                                            <th>Qris</th>
-                                            <th>Gojek</th>
-                                            <th>Grab</th>
+                                            <th>Es Batu</th>
+                                            <th>Galon</th>
+                                            <th>Gas</th>
+                                            <th>Barang Lainya</th>
                                             <th>Total</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -100,35 +97,24 @@ if (!isset($_SESSION['level'])) {
                                         $ambilsemuadatastock = mysqli_query($conn, "select k.*, o.namaoutlet from keuangan k LEFT JOIN outlet o ON k.idoutlet = o.idoutlet " . $search);
                                         $i = 1;
                                         while ($data = mysqli_fetch_array($ambilsemuadatastock)) {
-                                            $tanggal2 = $data['tanggal2'];
-                                            $outlet2 = $data['outlet2'];
-                                            $shiftpagi = $data['shiftpagi'];
-                                            $shiftmalam = $data['shiftmalam'];
-                                            $debittransfer = $data['debittransfer'];
-                                            $qris = $data['qris'];
-                                            $gojek= $data['gojek'];
-                                            $grab = $data['grab'];
+                                            $tanggal = $data['tanggal2'];
+                                            $nama_outlet = $data['outlet2'];
+                                            $es_batu = $data['shiftpagi'];
+                                            $galon = $data['shiftmalam'];
+                                            $gas = $data['debittransfer'];
+                                            $barang_lainya = $data['qris'];
                                             $total = $data['total'];
                                             $idkeu = $data['idkeuangan'];
-                                            $idoutlet = $data['idoutlet'];
-                                            $namaoutlet = $data['namaoutlet'];
-                                            $outletDisplay = $idoutlet ? $idoutlet . '-' . $namaoutlet : '-';
-                                            //cek
-
-                                            $base_url = "http://" . $_SERVER['SERVER_NAME'] . '/stokbarang/';
 
                                         ?>
                                             <tr>
                                                 <td><?= $i++; ?></td>
-                                                <td><?= $tanggal2; ?></td>
-                                                <td><?= $outlet2; ?></a></td>
-                                                <td><?= $outletDisplay; ?></td>
-                                                <td>Rp <?= number_format($shiftpagi, 0, ',', '.'); ?></td>
-                                                <td>Rp <?= number_format($shiftmalam, 0, ',', '.'); ?></td>
-                                                <td>Rp <?= number_format($debittransfer, 0, ',', '.'); ?></td>
-                                                <td>Rp <?= number_format($qris, 0, ',', '.'); ?></td>
-                                                <td>Rp <?= number_format($gojek, 0, ',', '.'); ?></td>
-                                                <td>Rp <?= number_format($grab, 0, ',', '.'); ?></td>
+                                                <td><?= $tanggal; ?></td>
+                                                <td><?= $nama_outlet; ?></td>
+                                                <td>Rp <?= number_format($es_batu, 0, ',', '.'); ?></td>
+                                                <td>Rp <?= number_format($galon, 0, ',', '.'); ?></td>
+                                                <td>Rp <?= number_format($gas, 0, ',', '.'); ?></td>
+                                                <td>Rp <?= number_format($barang_lainya, 0, ',', '.'); ?></td>
                                                 <td>Rp <?= number_format($total, 0, ',', '.'); ?></td>
                                                 <td>
                                                     <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#edit<?= $idkeu; ?>">
@@ -151,23 +137,23 @@ if (!isset($_SESSION['level'])) {
                                                         <!-- Modal body -->
                                                         <form method="post" enctype="multipart/form-data">
                                                             <div class="modal-body">
-                                                                <input type="text" name="tanggal2" value="<?= $tanggal2; ?>" class="form-control" required>
+                                                                <label for="tanggal2">Tanggal</label>
+                                                                <input type="text" name="tanggal2" value="<?= $tanggal; ?>" class="form-control" required>
                                                                 <br>
-                                                                <input type="text" name="outlet2" value="<?= $outlet2; ?>" class="form-control" required>
+                                                                <label for="outlet2">Nama Outlet</label>
+                                                                <input type="text" name="outlet2" value="<?= $nama_outlet; ?>" class="form-control" required>
                                                                 <br>
-                                                                <input type="number" max="99999" name="shiftpagi" id="stockInput" placeholder="" value="<?= $shiftpagi; ?>" class="form-control" required>
+                                                                <label for="shiftpagi">Es Batu</label>
+                                                                <input type="number" max="99999" name="shiftpagi" id="stockInput" placeholder="" value="<?= $es_batu; ?>" class="form-control" required>
                                                                 <br>
-                                                                <label for="shiftmalam">shiftmalam</label>
-                                                                <input type="number" name="shiftmalam" placeholder="shiftmalam" value="<?= $shiftmalam; ?>" class="form-control" required>
+                                                                <label for="shiftmalam">Galon</label>
+                                                                <input type="number" name="shiftmalam" placeholder="Galon" value="<?= $galon; ?>" class="form-control" required>
                                                                 <br>
-                                                                <input type="number" name="debittransfer" value="<?= $debittransfer; ?>" class="form-control" required>
+                                                                <label for="debittransfer">Gas</label>
+                                                                <input type="number" name="debittransfer" value="<?= $gas; ?>" class="form-control" required>
                                                                 <br>
-                                                                <input type="number" name="qris" value="<?= $qris; ?>" class="form-control" required>
-                                                                <br>
-                                                                <br>
-                                                                <input type="number" name="gojek" value="<?= $gojek; ?>" class="form-control" required>
-                                                                <br>
-                                                                <input type="number" name="grab" value="<?= $grab; ?>" class="form-control" required>
+                                                                <label for="qris">Barang Lainya</label>
+                                                                <input type="number" name="qris" value="<?= $barang_lainya; ?>" class="form-control" required>
                                                                 <br>
                                                                 <input type="hidden" name="idkeuangan" value="<?= $idkeu; ?>">
                                                                 <button type="submit" class="btn btn-primary" name="updatekeuangan">Submit</button>
@@ -255,22 +241,23 @@ if (!isset($_SESSION['level'])) {
             <form method="post" enctype='multipart/form-data'>
 
                 <div class="modal-body">
+                    <label for="tanggal2">Tanggal</label>
                     <input type="text" name="tanggal2" placeholder="Tanggal" class="form-control" required>
                     <br>
+                    <label for="outlet2">Nama Outlet</label>
                     <input type="text" name="outlet2" placeholder="Nama Outlet" class="form-control" required>
                     <br>
-                    <input type="number" name="shiftpagi" placeholder="Cash Shift Pagi" class="form-control" required>
+                    <label for="shiftpagi">Es Batu</label>
+                    <input type="number" name="shiftpagi" placeholder="Es Batu" class="form-control" required>
                     <br>
-                    <input type="number" name="shiftmalam" placeholder="Cash Shift Malam" class="form-control" required>
+                    <label for="shiftmalam">Galon</label>
+                    <input type="number" name="shiftmalam" placeholder="Galon" class="form-control" required>
                     <br>
-                    <input type="number" name="debittransfer" placeholder="Debit/Transfer" class="form-control " required>
+                    <label for="debittransfer">Gas</label>
+                    <input type="number" name="debittransfer" placeholder="Gas" class="form-control " required>
                     <br>
-                    
-                    <input type="number" name="qris" placeholder="Qris" class="form-control " required>
-                    <br>
-                    <input type="number" name="gojek" id="gojek" placeholder="Gojek" class="form-control" required>
-                    <br>
-                    <input type="number" name="grab" id="grab" placeholder="Grab" class="form-control" required>
+                    <label for="qris">Barang Lainya</label>
+                    <input type="number" name="qris" placeholder="Barang Lainya" class="form-control " required>
                     <br>
                     <button type="submit" class="btn btn-primary" name="addnewkeuangan">submit</button>
                 </div>

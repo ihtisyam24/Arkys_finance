@@ -29,6 +29,7 @@ if (isset($_POST['addnewbeban'])) {
     $persediaanakhirmurni = $_POST['persediaanakhirmurni'];
     $totalhargapokokpenjualan = $_POST['totalhargapokokpenjualan'];
     $labakotor = $_POST['labakotor'];
+    $total = $_POST['total'];
     $idoutlet = isset($_SESSION['idoutlet']) && !empty($_SESSION['idoutlet']) ? $_SESSION['idoutlet'] : 'NULL';
 
     $totalhargapokokpenjualan = $persediaanawal + $belanjaproduksi + $persediaanakhirmurni;
@@ -44,27 +45,66 @@ if (isset($_POST['addnewbeban'])) {
     }
 }
 
+//nambah Biaya Operasional
+if (isset($_POST['addnewbp'])) {
+    $tanggal2 = $_POST['tanggal2'];
+    $outlet2 = $_POST['outlet2'];
+    $biayaoperasional = $_POST['biayaoperasional'];
+    $biayasewabangunan = $_POST['biayasewabangunan'];
+    $pln = $_POST['pln'];
+    $pdam = $_POST['pdam'];
+    $idoutlet = isset($_SESSION['idoutlet']) && !empty($_SESSION['idoutlet']) ? $_SESSION['idoutlet'] : 'NULL';
+
+    $totalbp = $biayaoperasional + $biayasewabangunan + $pln + $pdam;
+
+    $addtable = mysqli_query($conn, "insert into keuangan (tanggal2, outlet2, biayaoperasional, biayasewabangunan, pln, pdam, totalbp, idoutlet) values('$tanggal2', '$outlet2', '$biayaoperasional', '$biayasewabangunan', '$pln', '$pdam', '$totalbp', $idoutlet)");
+    if ($addtable) {
+        header('location: pengeluaranops.php');
+    } else {
+        echo 'Masih Gagal';
+        header('location: pengeluaranops.php');
+    }
+}
+
+//update Biaya Operasional
+if (isset($_POST['updatebp'])) {
+    $tanggal2 = $_POST['tanggal2'];
+    $outlet2 = $_POST['outlet2'];
+    $biayaoperasional = $_POST['biayaoperasional'];
+    $biayasewabangunan = $_POST['biayasewabangunan'];
+    $pln = $_POST['pln'];
+    $pdam = $_POST['pdam'];
+    $idkeuangan = $_POST['idkeuangan'];
+
+    $totalbp = $biayaoperasional + $biayasewabangunan + $pln + $pdam;
+
+    $update = mysqli_query($conn, "update keuangan set tanggal2='$tanggal2', outlet2='$outlet2', biayaoperasional='$biayaoperasional', biayasewabangunan='$biayasewabangunan', pln='$pln', pdam='$pdam', totalbp='$totalbp' where idkeuangan='$idkeuangan'");
+    if ($update) {
+        header('location: pengeluaranops.php');
+    } else {
+        echo 'Gagal';
+        header('location: pengeluaranops.php');
+    }
+}
+
 //nambah Laporan Keuangan
 if (isset($_POST['addnewkeuangan'])) {
     $tanggal2 = $_POST['tanggal2'];
     $outlet2 = $_POST['outlet2'];
-    $shiftpagi = $_POST['shiftpagi'];
-    $shiftmalam = $_POST['shiftmalam'];
-    $debittransfer = $_POST['debittransfer'];
-    $qris = $_POST['qris'];
-    $gojek = $_POST['gojek'];
-    $grab = $_POST['grab'];
-    $total = $_POST['total'];
+    $es_batu = $_POST['shiftpagi'];
+    $galon = $_POST['shiftmalam'];
+    $gas = $_POST['debittransfer'];
+    $barang_lainya = empty($_POST['qris']) ? 0 : $_POST['qris'];
     $idoutlet = isset($_SESSION['idoutlet']) && !empty($_SESSION['idoutlet']) ? $_SESSION['idoutlet'] : 'NULL';
 
-    $total = $shiftpagi + $shiftmalam + $debittransfer + $qris + $gojek + $grab;
+    $total = $es_batu + $galon + $gas + $barang_lainya;
 
-    $addtable = mysqli_query($conn, "insert into keuangan (tanggal2, outlet2, shiftpagi, shiftmalam, debittransfer, qris, gojek, grab, total, idoutlet) values('$tanggal2', '$outlet2', '$shiftpagi', '$shiftmalam', '$debittransfer', '$qris', '$gojek', '$grab', '$total', $idoutlet)");
+    $addtable = mysqli_query($conn, "insert into keuangan (tanggal2, outlet2, es_batu, galon, gas, barang_lainya, total, idoutlet) values('$tanggal2', '$outlet2', '$es_batu', '$galon', '$gas', '$barang_lainya', '$total', $idoutlet)");
     if ($addtable) {
-        header('location: laporankeuangan.php');
+        header('location: pengeluaranops.php');
     } else {
         echo 'Masih Gagal';
-        header('location: laporankeuangan.php');
+        header('location: pengeluaranops.php');
     }
 }
 
@@ -279,24 +319,22 @@ if (isset($_POST['updatekeuangan'])) {
     $idkeu = $_POST['idkeuangan'];
     $tanggal2 = $_POST['tanggal2'];
     $outlet2 = $_POST['outlet2'];
-    $shiftpagi = $_POST['shiftpagi'];
-    $shiftmalam = $_POST['shiftmalam'];
-    $debittransfer = $_POST['debittransfer'];
-    $qris = $_POST['qris'];
-    $gojek = $_POST['gojek'];
-    $grab = $_POST['grab'];
-    $total = $_POST['total'];
+    $es_batu = $_POST['shiftpagi'];
+    $galon = $_POST['shiftmalam'];
+    $gas = $_POST['debittransfer'];
+    $barang_lainya = $_POST['qris'];
+    $idoutlet = isset($_SESSION['idoutlet']) && !empty($_SESSION['idoutlet']) ? $_SESSION['idoutlet'] : 'NULL';
 
-    $total = $shiftpagi + $shiftmalam + $debittransfer + $qris + $gojek + $grab;
+    $total = $es_batu + $galon + $gas + $barang_lainya;
 
     // Update the database
-    $update = mysqli_query($conn, "UPDATE keuangan SET tanggal2='$tanggal2', outlet2='$outlet2', shiftpagi='$shiftpagi', shiftmalam='$shiftmalam', debittransfer='$debittransfer', qris='$qris', gojek='$gojek', grab='$grab', total='$total'  WHERE idkeuangan='$idkeu'");
+    $update = mysqli_query($conn, "UPDATE keuangan SET tanggal2='$tanggal2', outlet2='$outlet2', es_batu='$es_batu', galon='$galon', gas='$gas', barang_lainya='$barang_lainya', total='$total', idoutlet='$idoutlet'  WHERE idkeuangan='$idkeu'");
 
     if ($update) {
-        header('location: laporankeuangan.php');
+        header('location: pengeluaranops.php');
     } else {
         echo 'Failed to update.';
-        header('location: laporankeuangan.php');
+        header('location: pengeluaranops.php');
     }
 }
 
@@ -588,7 +626,7 @@ if (isset($_POST['updatebarangkeluar'])) {
     }
 }
 
-//ubah (barang keluar)1 
+//ubah (barang keluar)1
 if (isset($_POST['updatebarangkeluar1'])) {
     $idb1 = $_POST['idbarang1'];
     $idk1 = $_POST['idkeluar1'];
@@ -599,10 +637,10 @@ if (isset($_POST['updatebarangkeluar1'])) {
     $outlettujuan = $_POST['outlettujuan'];
     $lihatstock1 = mysqli_query($conn, "select * from stockoutlet where idbarang1='$idb1'");
     $stocknya1 = mysqli_fetch_array($lihatstock1);
-    $stocksekarang1 = $stocknya['stock1'];
+    $stocksekarang1 = $stocknya1['stock1'];
     $qtysekarang1 = mysqli_query($conn, "select * from keluaroutlet where idkeluar1='$idk1'");
     $qtynya1 = mysqli_fetch_array($qtysekarang1);
-    $qtysekarang1 = $qtynya['qty1'];
+    $qtysekarang1 = $qtynya1['qty1'];
     $tambahstock1 = $stocksekarang1 + ($qtysekarang1 - $qty1);
     $nambahinstock1 = mysqli_query($conn, "update stockoutlet set stock1='$tambahstock1' where idbarang1='$idb1'");
     $updatenya1 = mysqli_query($conn, "update keluaroutlet set keterangan1='$keterangan1', qty1='$qty1', outlet='$outlet', outlettujuan='$outlettujuan' where idkeluar1='$idk1'");
