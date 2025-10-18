@@ -1,7 +1,9 @@
 <?php
 session_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 //membuat koneksi ke database
-$conn = mysqli_connect("localhost", "root", "", "stokbarang");
+$conn = mysqli_connect("localhost", "root", "", "finance");
 if ($conn) {
 }
 
@@ -57,7 +59,7 @@ if (isset($_POST['addnewbp'])) {
 
     $totalbp = $biayaoperasional + $biayasewabangunan + $pln + $pdam;
 
-    $addtable = mysqli_query($conn, "insert into keuangan (tanggal2, outlet2, biayaoperasional, biayasewabangunan, pln, pdam, totalbp, idoutlet) values('$tanggal2', '$outlet2', '$biayaoperasional', '$biayasewabangunan', '$pln', '$pdam', '$totalbp', $idoutlet)");
+    $addtable = mysqli_query($conn, "insert into keuangan (tanggal2, outlet2, biayaoperasional, biayasewabangunan, pln, pdam, totalbp, gojek, grab, idoutlet) values('$tanggal2', '$outlet2', '$biayaoperasional', '$biayasewabangunan', '$pln', '$pdam', '$totalbp', '0', '0', $idoutlet)");
     if ($addtable) {
         header('location: pengeluaranops.php');
     } else {
@@ -91,20 +93,22 @@ if (isset($_POST['updatebp'])) {
 if (isset($_POST['addnewkeuangan'])) {
     $tanggal2 = $_POST['tanggal2'];
     $outlet2 = $_POST['outlet2'];
-    $es_batu = $_POST['shiftpagi'];
-    $galon = $_POST['shiftmalam'];
-    $gas = $_POST['debittransfer'];
-    $barang_lainya = empty($_POST['qris']) ? 0 : $_POST['qris'];
+    $shiftpagi = isset($_POST['shiftpagi']) ? $_POST['shiftpagi'] : 0;
+    $shiftmalam = isset($_POST['shiftmalam']) ? $_POST['shiftmalam'] : 0;
+    $debittransfer = isset($_POST['debittransfer']) ? $_POST['debittransfer'] : 0;
+    $qris = isset($_POST['qris']) ? $_POST['qris'] : 0;
+    $gojek = isset($_POST['gojek']) ? $_POST['gojek'] : 0;
+    $grab = isset($_POST['grab']) ? $_POST['grab'] : 0;
     $idoutlet = isset($_SESSION['idoutlet']) && !empty($_SESSION['idoutlet']) ? $_SESSION['idoutlet'] : 'NULL';
 
-    $total = $es_batu + $galon + $gas + $barang_lainya;
+    $total = $shiftpagi + $shiftmalam + $debittransfer + $qris + $gojek + $grab;
 
-    $addtable = mysqli_query($conn, "insert into keuangan (tanggal2, outlet2, es_batu, galon, gas, barang_lainya, total, idoutlet) values('$tanggal2', '$outlet2', '$es_batu', '$galon', '$gas', '$barang_lainya', '$total', $idoutlet)");
+    $addtable = mysqli_query($conn, "insert into keuangan (tanggal2, outlet2, shiftpagi, shiftmalam, debittransfer, qris, gojek, grab, total, persediaanawal, belanjaproduksi, persediaanakhir, persediaanakhirmurni, totalhargapokokpenjualan, labakotor, biayaoperasional, biayasewabangunan, bebangaji, pln, pdam, wifi, bebanpajak, totalbp, lababersih, idoutlet) values('$tanggal2', '$outlet2', '$shiftpagi', '$shiftmalam', '$debittransfer', '$qris', '$gojek', '$grab', '$total', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', $idoutlet)");
     if ($addtable) {
-        header('location: pengeluaranops.php');
+        header('location: laporankeuangan.php');
     } else {
         echo 'Masih Gagal';
-        header('location: pengeluaranops.php');
+        header('location: laporankeuangan.php');
     }
 }
 
@@ -270,10 +274,8 @@ if (isset($_POST['updatebp'])) {
     $wifi = $_POST['wifi'];
     $bebanpajak = $_POST['bebanpajak'];
     $totalbp = $_POST['totalbp'];
-    $labakotor = $_POST['labakotor'];
 
     $totalbp = $biayaoperasional + $biayasewabangunan + $bebangaji + $pln + $pdam + $wifi + $bebanpajak;
-    $labakotor = $total - $totalhargapokokpenjualan;
 
     // Update the database
     $update = mysqli_query($conn, "UPDATE keuangan SET tanggal2='$tanggal2', outlet2='$outlet2', biayaoperasional='$biayaoperasional', biayasewabangunan='$biayasewabangunan', bebangaji='$bebangaji', pln='$pln', pdam='$pdam', wifi='$wifi', bebanpajak='$bebanpajak', totalbp='$totalbp'  WHERE idkeuangan='$idkeu'");
@@ -328,7 +330,7 @@ if (isset($_POST['updatekeuangan'])) {
     $total = $es_batu + $galon + $gas + $barang_lainya;
 
     // Update the database
-    $update = mysqli_query($conn, "UPDATE keuangan SET tanggal2='$tanggal2', outlet2='$outlet2', es_batu='$es_batu', galon='$galon', gas='$gas', barang_lainya='$barang_lainya', total='$total', idoutlet='$idoutlet'  WHERE idkeuangan='$idkeu'");
+    $update = mysqli_query($conn, "UPDATE keuangan SET tanggal2='$tanggal2', outlet2='$outlet2', shiftpagi='$es_batu', shiftmalam='$galon', debittransfer='$gas', qris='$barang_lainya', total='$total', idoutlet='$idoutlet'  WHERE idkeuangan='$idkeu'");
 
     if ($update) {
         header('location: pengeluaranops.php');
