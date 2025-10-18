@@ -1,0 +1,16 @@
+Username : Admin@gmail.com
+Kalau untuk leader dan kapten: yusufmuhammad230899@gmail.com
+Kalau untuk gudang : hafidz@gmail.com
+Dan untuk finance : arimbi@gmail.com
+
+Passwordnya semuanya: 12345678
+
+Saya sudah ada codingannya kak dan database nya kak cuman ada penambahan fitur kak untuk halaman login kak
+Jadi semisalnya ini mas ada 6 cabang outlet nahh supervisornya hanya bisa input sesuai dengan outletnya masing-masing kak
+dan memperbaiki masalah di import data yaa kak karna punya saya error
+Cuman lebih ke rolenya aja kak agar berealisasi kak apalagi kak untuk leader dan kapten itu masing-masing beda outletnya kak
+
+* Penambahan kolom id outlet untuk akomodir penunjukkan id outlet ke user leader & kepala gudang => 100rb
+* perubahan logic pada user leader dan gudang hanya bisa manage 1 data outlet => 200rb
+* perbaikan error fitur import file excel dan memastikan kompatibel dengan sistem web => 400rb
+* perubahan pada beberapa form input agar sesuai dengan logic yang baru (termasuk form management user oleh super admin) => 300rb
